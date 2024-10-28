@@ -9,7 +9,7 @@ pipeline {
 				script {
 					checkout scm
 					sh 'echo ${BUILD_TIMESTAMP}'
-					sh 'docker login -u rprasad6 -p Ree9969177492@}'
+					sh 'docker login -u rprasad6 -p Ree9969177492/'
 					def customImage = docker.build("rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}")
 				}
 			}
