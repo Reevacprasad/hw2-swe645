@@ -3,7 +3,8 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker')  // Retrieve DockerHub credentials
         BUILD_TIMESTAMP = "${new Date().format('yyyyMMddHHmmss')}" // Use a timestamp for image tagging
-    }
+		KUBECONFIG_CREDENTIALS = credentials('kubeconfig')
+	}
     stages {
         stage("Build Survey Image") {
             steps {
@@ -33,6 +34,11 @@ pipeline {
                 script {
                     // Deploy the image to Kubernetes
                     sh "kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default"
+                }
+            }
+			steps {
+                withEnv(["KUBECONFIG=${KUBECONFIG_CREDENTIALS}"]) {
+                    sh 'kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default'
                 }
             }
         }
