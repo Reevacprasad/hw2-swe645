@@ -12,7 +12,7 @@ pipeline {
                     sh 'echo ${BUILD_TIMESTAMP}'
                     
                     // Correctly login to DockerHub using the username and password
-                    sh 'docker login -u rprasad6 -p ${DOCKERHUB_CREDENTIALS_PSW}'
+                    sh 'docker login -u rprasad6 -p ${DOCKERHUB_CREDENTIALS}'
                     
                     // Build the Docker image
                     def customImage = docker.build("rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}")
