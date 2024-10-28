@@ -1,7 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker')  // Retrieves both username and password
+        DOCKERHUB_CREDENTIALS = credentials('docker')  // Retrieve DockerHub credentials
+        BUILD_TIMESTAMP = "${new Date().format('yyyyMMddHHmmss')}" // Use a timestamp for image tagging
     }
     stages {
         stage("Build Survey Image") {
@@ -12,7 +13,7 @@ pipeline {
                     sh 'echo ${BUILD_TIMESTAMP}'
                     
                     // Correctly login to DockerHub using the username and password
-                    sh 'docker login -u rprasad6 -p ${DOCKERHUB_CREDENTIALS}'
+                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
                     
                     // Build the Docker image
                     def customImage = docker.build("rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}")
@@ -23,7 +24,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to DockerHub
-                    sh 'docker push rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}'
+                    sh "docker push rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}"
                 }
             }
         }
@@ -31,7 +32,7 @@ pipeline {
             steps {
                 script {
                     // Deploy the image to Kubernetes
-                    sh 'kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default'
+                    sh "kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default"
                 }
             }
         }
