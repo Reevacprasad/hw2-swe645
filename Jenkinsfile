@@ -30,12 +30,6 @@ pipeline {
             }
         }
         stage("Deploy to kubernetes") {
-            steps {
-                script {
-                    // Deploy the image to Kubernetes
-                    sh "kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default"
-                }
-            }
 			steps {
                 withEnv(["KUBECONFIG=${KUBECONFIG_CREDENTIALS}"]) {
                     sh 'kubectl set image deployment/container-hw2 container-hw2=rprasad6/docker-img-hw2:${BUILD_TIMESTAMP} -n default'
