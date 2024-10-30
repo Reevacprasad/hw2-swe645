@@ -1,3 +1,7 @@
+ # Group: Alpha1
+ # File: Jenkinsfile
+ # Description: To define CI/CD pipeline for Docker Image Buliding and pushing, deploying to Kubernetes cluster
+
 pipeline {
     agent any
     environment {
