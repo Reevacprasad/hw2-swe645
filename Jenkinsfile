@@ -29,6 +29,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to DockerHub
+					
                     sh "docker push rprasad6/docker-img-hw2:${BUILD_TIMESTAMP}"
                 }
             }
